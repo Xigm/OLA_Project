@@ -87,7 +87,7 @@ plt.legend(["TS","Greedy"])
 
 # Compute money earned
 # VERY very doubtious
-costs_of_manufacture = 5
+costs_of_manufacture = 10
 daily_clicks = 100
 index_best = np.argmax([sum(listi) for listi in np.array(gr_learner.rewards_per_arm,dtype = object)])
 price_sell = prices[index_best]

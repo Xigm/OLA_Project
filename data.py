@@ -21,22 +21,29 @@ CR.append({i:j for i,j in zip(prices,conv_rates_not_working)})
 CR.append({i:j for i,j in zip(prices,conv_rates_work_casual)})
 CR.append({i:j for i,j in zip(prices,conv_rates_work_hc)})
 
-data_points = np.arange(1,100)
+L = 100
+data_points = np.arange(1,L)
 bid_per_click = np.floor(100*np.log(data_points))
 
 # clicks per bid
 ClicksPB = []
 
-ClicksPB.append({i:j for i,j in zip(10*bid_per_click,conv_rates_not_working)})
-ClicksPB.append({i:j for i,j in zip(3*bid_per_click,conv_rates_work_casual)})
-ClicksPB.append({i:j for i,j in zip(bid_per_click,conv_rates_work_hc)})
+th = 20
+ClicksPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),5*bid_per_click[:L-th]])})
+th = 10
+ClicksPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),3*bid_per_click[:L-th]])})
+th = 50
+ClicksPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),1*bid_per_click[:L-th]])})
 
 # cost per bid
 CostPB = []
 
-CostPB.append({i:j for i,j in zip(bid_per_click,conv_rates_not_working)})
-CostPB.append({i:j for i,j in zip(bid_per_click,conv_rates_work_casual)})
-CostPB.append({i:j for i,j in zip(bid_per_click,conv_rates_work_hc)})
+th = 20
+CostPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),1*bid_per_click[:L-th]])})
+th = 10
+CostPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),5*bid_per_click[:L-th]])})
+th = 50
+CostPB.append({i:j for i,j in zip(data_points,np.r_[np.zeros(th),3*bid_per_click[:L-th]])})
 
 def get_data():
     return CR, ClicksPB, CostPB
