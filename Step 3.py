@@ -33,8 +33,9 @@ opt_price = max([i*j for i,j in zip(list(C1.values()),list(C1.keys()))])
 opt_profit = max([opt_price * i - z for i,j,z in zip(list(clicks.values()), list(clicks.keys()), list(cost.values()))])
 
 # Set the number of rounds and experiments
-T = 365
-n_experiments = 3
+# Mig: From around day 150 behaviour is linear
+T = 150
+n_experiments = 5
 sigma = 10
 
 # Initialize lists to store rewards for GP-TS and GP-UCB
@@ -50,7 +51,7 @@ for i in tqdm(range(n_experiments), desc="Experiments"):
     ts_learner_price = TS_Learner_modded(n_arms_price,max(prices))
     #gr_learner = Greedy_learner_modded(n_arms, max(prices))
     gpts_learner = GPTS_Learner(n_arms=n_arms_adv, arms=bids)
-    gpucb_learner =GPUCB_Learner(n_arms=n_arms_adv, arms=bids)
+    gpucb_learner = GPUCB_Learner(n_arms=n_arms_adv, arms=bids)
 
     # Run rounds
     for t in tqdm(range(T), desc='Day'):
