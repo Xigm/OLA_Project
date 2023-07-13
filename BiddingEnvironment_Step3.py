@@ -1,9 +1,5 @@
 import numpy as np
 
-# function that calculates the profit generated
-def gain(x, marg, rate, clicks, cost):
-    return marg * rate * clicks[x] - cost[x]
-
 class BiddingEnvironment() : 
     def __init__(self, bids, sigma, clicks, cost):
         self.bids = bids
@@ -12,6 +8,12 @@ class BiddingEnvironment() :
         self.sigmas = np.ones(len(bids)) * sigma
 
     def round(self, pulled_arm, conv_rate, price):
-        return np.random.normal(gain(self.bids[pulled_arm], price, conv_rate, self.clicks, self.cost), self.sigmas[pulled_arm])
+        number_of_clicks = int(np.random.normal(self.clicks[self.bids[pulled_arm]], self.sigmas[pulled_arm]))
+        reward = 0
+        for _ in range(number_of_clicks):
+            purchase = np.random.binomial(1, conv_rate)
+            reward += purchase*price
+        return reward - self.cost[self.bids[pulled_arm]]
+   
     
         
