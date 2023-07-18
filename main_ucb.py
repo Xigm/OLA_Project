@@ -1,8 +1,8 @@
-from pricing import PricingModel
-from advertising import AdvertisingModel
-from ucb1 import UCB1
-from passive_ucb1 import PassiveUCB1
-from active_ucb1 import ActiveUCB1
+from step5.pricing import PricingModel
+from step5.advertising import AdvertisingModel
+from step5.ucb1 import UCB1
+from step5.passive_ucb1 import PassiveUCB1
+from step5.active_ucb1 import ActiveUCB1
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -91,5 +91,4 @@ if __name__ == '__main__':
     plot_results(ucb1.avg_cumulative_regret, passive_ucb1.avg_cumulative_regret, active_ucb1.avg_cumulative_regret,
                  ucb1.avg_cumulative_reward, passive_ucb1.avg_cumulative_reward, active_ucb1.avg_cumulative_reward,
                  ucb1.avg_instantaneous_regret, passive_ucb1.avg_instantaneous_regret, active_ucb1.avg_instantaneous_regret,
-                 ucb1.avg_instantaneous_reward, passive_ucb1.avg_instantaneous_reward, active_ucb1.avg_instantaneous_reward,
-                 save_dir='.')
+                 ucb1.avg_instantaneous_reward, passive_ucb1.avg_instantaneous_reward, active_ucb1.avg_instantaneous_reward)
