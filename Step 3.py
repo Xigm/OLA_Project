@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from TS_learner_modded import TS_Learner_modded
-#from Greedy_learner import Greedy_learner
-#from Greedy_learner_modded import Greedy_learner_modded
 from environment_pricing import environment_pricing
 from tqdm import tqdm
 from data import get_data
@@ -34,7 +32,7 @@ opt_profit = max([opt_price * i - z for i,j,z in zip(list(clicks.values()), list
 
 # Set the number of rounds and experiments
 # Mig: From around day 150 behaviour is linear
-T = 150
+T = 365
 n_experiments = 5
 sigma = 10
 
@@ -62,13 +60,6 @@ for i in tqdm(range(n_experiments), desc="Experiments"):
         reward_com = reward*prices[pulled_arm_price]
         ts_learner_price.update(pulled_arm_price, reward_com)
 
-        # Greedy learner
-        #pulled_arm = gr_learner.pull_arm()
-        #pulled_arms_gr.append(pulled_arm)
-        #reward = env_price.next_round(pulled_arm)
-        #reward_com = reward*prices[pulled_arm]
-        #gr_learner.update(pulled_arm, reward_com)
-
         # GPTS Round
         pulled_arm_adv = gpts_learner.pull_arm()
         reward_adv = env_bid.round(pulled_arm_adv, conv_rate=convertion_rate[pulled_arm_price], price=prices[pulled_arm_price])
@@ -89,18 +80,35 @@ print('GP-TS Profit: ',max(np.cumsum(np.mean(np.array(gpts_rewards_per_experimen
 print('GP-UCB Profit: ',max(np.cumsum(np.mean(np.array(gpucb_rewards_per_experiment),axis=0))))
 
 # Plot the cumulative regret
-plt.figure()
+plt.figure("Cumulative Regret")
 plt.xlabel("t")
-plt.ylabel("Regret")
+plt.ylabel("Cumulative Regret")
 plt.plot(np.cumsum(np.mean(opt_profit - np.array(gpts_rewards_per_experiment),axis=0)),'r')
 plt.plot(np.cumsum(np.mean(opt_profit - np.array(gpucb_rewards_per_experiment),axis=0)),'g')
 plt.legend(["GP-TS","GP-UCB"])
 
 # plot the cumulative profit
-plt.figure('Profit')
+plt.figure('Cumulative Reward')
 plt.plot(np.cumsum(np.mean(np.array(gpts_rewards_per_experiment),axis=0)),'r')
 plt.plot(np.cumsum(np.mean(np.array(gpucb_rewards_per_experiment),axis=0)),'g')
 plt.plot(np.cumsum(np.full(T, opt_profit)), 'b')
+plt.xlabel("t")
+plt.ylabel("Profit")
+plt.legend(["GP-TS","GP-UCB","Optimal"])
+
+# plot the Instantaneous Regret
+plt.figure("Instantaneous Regret")
+plt.xlabel("t")
+plt.ylabel("Instantaneous Regret")
+plt.plot(np.mean(opt_profit - np.array(gpts_rewards_per_experiment),axis=0),'r')
+plt.plot(np.mean(opt_profit - np.array(gpucb_rewards_per_experiment),axis=0),'g')
+plt.legend(["GP-TS","GP-UCB"])
+
+# plot the Instantaneous profit
+plt.figure('Instantaneous Reward')
+plt.plot(np.mean(np.array(gpts_rewards_per_experiment),axis=0),'r')
+plt.plot(np.mean(np.array(gpucb_rewards_per_experiment),axis=0),'g')
+plt.plot(np.full(T, opt_profit), 'b')
 plt.xlabel("t")
 plt.ylabel("Profit")
 plt.legend(["GP-TS","GP-UCB","Optimal"])
