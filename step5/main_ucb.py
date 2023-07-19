@@ -8,6 +8,7 @@ from ucb1 import UCB1
 import os
 
 if __name__ == '__main__':
+    print("Start...")
     num_phases = 3
     # change for sensitvity analysis
     num_runs = 100
@@ -223,6 +224,7 @@ if __name__ == '__main__':
     plt.savefig(os.path.join('.', 'instantaneous_reward2.png'))
     plt.show()
 
+    print("Done!")
 
 
 

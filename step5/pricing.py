@@ -49,6 +49,7 @@ import random
 
 
 import numpy as np
+import random
 
 class PricingModel:
     def __init__(self, num_phases):
@@ -93,9 +94,23 @@ class PricingModel:
 
         # Generate prices for each day
         num_days = 365
+        c1 = random.randint(-5, 5)
+        c2 = random.randint(-5, 5)
+        c3 = random.randint(-5, 5)
+        
         prices = np.zeros(num_days)
         for day in range(num_days):
-            price = random.choice(prices_new)
+            # simulate an abrupt change in the pricing curve for a specific phase
+            change_factor = 0
+            if day <= 100:
+                change_factor = c1
+            if day <= 200 and day > 100:
+                change_factor = c2
+            if day <= 365 and day > 200:
+                change_factor = c3
+
+            price = random.choice(prices_new) + change_factor
             prices[day] = price
 
         return prices
+

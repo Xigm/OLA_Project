@@ -81,7 +81,7 @@ class ActiveUCB1:
         num_days = 365
 
         # Initialize variables for the phase
-        num_clicks = np.zeros(num_arms)
+        num_clicks = np.ones(num_arms)
         total_reward = 0
         best_arm = 0
 
@@ -96,14 +96,14 @@ class ActiveUCB1:
             # Update cumulative regret and reward
             regret = pricing_model.get_price(best_arm, day) - price
             self.cumulative_regret[phase, run] += regret
-            self.cumulative_reward[phase, run] += regret
+            self.cumulative_reward[phase, run] += price
 
             # Update instantaneous regret and reward
             self.instantaneous_regret[phase, run, day] = regret
-            self.instantaneous_reward[phase, run, day] = regret
+            self.instantaneous_reward[phase, run, day] = price
 
             # Update total reward and number of clicks
-            total_reward += regret
+            total_reward += price
             num_clicks[int(arm)] += np.sum(clicks)
 
             # Update the best arm based on the cumulative reward
