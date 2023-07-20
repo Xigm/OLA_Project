@@ -1,3 +1,5 @@
+# %% Imports
+
 import numpy as np
 import matplotlib.pyplot as plt
 from TS_learner_modded import TS_Learner_modded
@@ -15,7 +17,7 @@ import warnings
 # ignore scikit-learn warnings
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
-# Function to maximize
+# %% Function to maximize
 gains = lambda daily_clicks, conversion, margin, cumulative_daily_costs: daily_clicks * conversion * margin - cumulative_daily_costs
 
 C, clicks, cost = get_data()
@@ -49,7 +51,7 @@ convertion_rate3 = list(C3.values())
 
 
 
-# Set the number of arms and the optimal conversion rate and profit
+# %% Set the number of arms and the optimal conversion rate and profit
 n_arms_price1 = len(C1)
 n_arms_adv1 = len(clicks1)
 opt_price1 = max([i*j for i,j in zip(list(C1.values()),list(C1.keys()))])
@@ -67,7 +69,7 @@ opt_profit3 = max([opt_price3 * i - z for i,j,z in zip(list(clicks3.values()), l
 
 
 
-
+# %% Experiments
 # Set the number of rounds and experiments
 # Mig: From around day 150 behaviour is linear
 T = 150
