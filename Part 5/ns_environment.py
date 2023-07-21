@@ -15,6 +15,7 @@ class NSEnvironment(Environment):
         current_phase = int(self.t / self.phases_size)
         p = self.probabilities[current_phase][pulled_arm]
         reward = np.random.binomial(1, p)
+        reward = reward * self.prices[pulled_arm]
         self.t += 1
         return reward
 

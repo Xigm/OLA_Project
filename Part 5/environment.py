@@ -4,6 +4,7 @@ class Environment():
     def __init__(self, n_arms, probabilities):
         self.n_arms = n_arms
         self.probabilities = probabilities
+        self.prices = [10, 25, 40, 55, 70]
 
     def round(self, pulled_arm):
         # returns the reward of the chosen arm 
@@ -11,4 +12,8 @@ class Environment():
         # 1: the number of trials (or attempts)
         # self.probabilities[pulled_arm]: the probability of success for each trial
         # returns: either 0 or 1
-        return reward
+        reward = reward * self.prices[pulled_arm]
+        return reward 
+
+            
+

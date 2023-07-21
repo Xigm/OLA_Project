@@ -5,18 +5,19 @@ import matplotlib.pyplot as plt
 from ns_environment import NSEnvironment
 from Passive import Passive
 from Active import Active
+import os
 
 n_arms = 5 # defined in the task
 n_phases = 3
 
 # the default pricing curve from data.py:
 # [{10: 0.7, 25: 0.5, 40: 0.3, 55: 0.2, 70: 0.1}, {10: 0.8, 25: 0.6, 40: 0.5, 55: 0.4, 70: 0.2}, {10: 0.2, 25: 0.4, 40: 0.7, 55: 0.8, 70: 0.6}]
+prices = [10, 25, 40, 55, 70]
 # columns: arms
 # rows: phases
 p = np.array([[0.7, 0.5, 0.3, 0.2, 0.1],
              [0.8, 0.6, 0.5, 0.4, 0.2],
              [0.2, 0.4, 0.7, 0.8, 0.6]])
-
 T = 365 # the time horizon of 365 days
 phases_len = int(T/n_phases)
 n_experiments = 100
@@ -67,7 +68,9 @@ ucb1_instantaneus_regret = np.zeros(T)
 passive_instantaneus_regret = np.zeros(T)
 active_instantaneus_regret = np.zeros(T)
 
+p = p*prices
 opt_per_phases = p.max(axis=1)
+print(opt_per_phases)
 optimum_per_round = np.zeros(T)
 
 # iterate over the phases
@@ -79,8 +82,6 @@ for i in range(n_phases):
     passive_instantaneus_regret[t_index] = opt_per_phases[i] - np.mean(passive_rewards_per_experiment, axis=0)[t_index]
     active_instantaneus_regret[t_index] = opt_per_phases[i] - np.mean(active_rewards_per_experiment, axis=0)[t_index]
 
-
-
 # plot the results:
 
 plt.figure(0)
@@ -88,25 +89,45 @@ plt.figure(0)
 plt.plot(np.mean(ucb1_rewards_per_experiment, axis=0), 'r')
 plt.plot(np.mean(passive_rewards_per_experiment, axis=0), 'b')
 plt.plot(np.mean(active_rewards_per_experiment, axis=0), 'g')
-
 plt.plot(optimum_per_round, 'k--')
-
 plt.legend(['UCB1', 'Passive', 'Active', 'Optimum'])
 plt.xlabel("t")
-plt.ylabel("Reward")
+plt.ylabel("Instantaneus Reward")
+#plt.savefig(os.path.join('.', 'instantaneus_reward1.png'))
 plt.show()
 
-
 plt.figure(1)
+plt.plot(np.cumsum(np.mean(np.array(ucb1_rewards_per_experiment),axis=0)),'r')
+plt.plot(np.cumsum(np.mean(np.array(passive_rewards_per_experiment),axis=0)),'b')
+plt.plot(np.cumsum(np.mean(np.array(active_rewards_per_experiment),axis=0)),'g')
+plt.xlabel("t")
+plt.ylabel("Cumulative Reward")
+plt.legend(['UCB1', 'Passive', 'Active'])
+#plt.savefig(os.path.join('.', 'cumulative_reward1.png'))
+plt.show()
 
-plt.plot(np.cumsum(ucb1_instantaneus_regret), 'r')
-plt.plot(np.cumsum(passive_instantaneus_regret), 'b')
-plt.plot(np.cumsum(passive_instantaneus_regret), 'g')
-
+plt.figure(2)
+plt.plot(np.mean(optimum_per_round[0] - ucb1_rewards_per_experiment, axis=0), 'r')
+plt.plot(np.mean(optimum_per_round[0] - passive_rewards_per_experiment, axis=0), 'b')
+plt.plot(np.mean(optimum_per_round[0] - active_rewards_per_experiment, axis=0), 'g')
 plt.legend(['UCB1', 'Passive', 'Active'])
 plt.xlabel("t")
-plt.ylabel("Regret")
+plt.ylabel("Instantaneus Regret")
+#plt.savefig(os.path.join('.', 'instantaneus_regret1.png'))
+plt.show()
+
+plt.figure(3)
+plt.plot(np.cumsum(ucb1_instantaneus_regret), 'r')
+plt.plot(np.cumsum(passive_instantaneus_regret), 'b')
+plt.plot(np.cumsum(active_instantaneus_regret), 'g')
+plt.legend(['UCB1', 'Passive', 'Active'])
+plt.xlabel("t")
+plt.ylabel("Cumulative Regret")
+#plt.savefig(os.path.join('.', 'cumulative_regret1.png'))
 plt.show()
 
 print("Done!")
+
+
+
 
