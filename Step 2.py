@@ -7,7 +7,7 @@ Created on Fri Jun 30 04:28:55 2023
 
 import numpy as np
 import matplotlib.pyplot as plt 
-from bidding_environnement_stp2 import *
+from BiddingEnvironment_Step2 import *
 from GPTS_Learner_Step2 import *
 from GPUCB_Learner_Step2 import *
 from sklearn.exceptions import ConvergenceWarning
